@@ -2,7 +2,7 @@ module github.com/project-kessel/inventory-client-go
 
 go 1.22.9
 
-toolchain go1.23.2
+toolchain go1.24.1
 
 require (
 	github.com/authzed/grpcutil v0.0.0-20240123194739-2ea1e3d2d98b
@@ -11,7 +11,7 @@ require (
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/project-kessel/inventory-api v0.0.0-20250327125722-6a0e2375fa05
 	google.golang.org/grpc v1.71.0
-	google.golang.org/protobuf v1.36.5
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
