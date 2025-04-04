@@ -8,7 +8,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/project-kessel/inventory-api v0.0.0-20250404075401-f1a27257285a
-	google.golang.org/grpc v1.71.0
+	google.golang.org/grpc v1.71.1
 	google.golang.org/protobuf v1.36.6
 )
 
