@@ -9,7 +9,6 @@ import (
 	"github.com/authzed/grpcutil"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	kesselv2 "github.com/project-kessel/inventory-api/api/kessel/inventory/v1beta2"
-	authzbeta2 "github.com/project-kessel/inventory-api/api/kessel/inventory/v1beta2/authz"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -18,15 +17,15 @@ type Inventory interface{}
 
 type InventoryClient struct {
 	KesselResourceService kesselv2.KesselResourceServiceClient
-	KesselCheckService    authzbeta2.KesselCheckServiceClient
-	KesselLookupService   authzbeta2.KesselLookupServiceClient
+	KesselCheckService    kesselv2.KesselCheckServiceClient
+	KesselLookupService   kesselv2.KesselLookupServiceClient
 	gRPCConn              *grpc.ClientConn
 	tokenClient           *common.TokenClient
 }
 
 type InventoryHttpClient struct {
 	KesselResourceService kesselv2.KesselResourceServiceHTTPClient
-	KesselCheckService    authzbeta2.KesselCheckServiceHTTPClient
+	KesselCheckService    kesselv2.KesselCheckServiceHTTPClient
 	tokenClient           *common.TokenClient
 }
 
@@ -63,8 +62,8 @@ func New(config *common.Config) (*InventoryClient, error) {
 
 	return &InventoryClient{
 		KesselResourceService: kesselv2.NewKesselResourceServiceClient(conn),
-		KesselCheckService:    authzbeta2.NewKesselCheckServiceClient(conn),
-		KesselLookupService:   authzbeta2.NewKesselLookupServiceClient(conn),
+		KesselCheckService:    kesselv2.NewKesselCheckServiceClient(conn),
+		KesselLookupService:   kesselv2.NewKesselLookupServiceClient(conn),
 		gRPCConn:              conn,
 		tokenClient:           tokencli,
 	}, err
@@ -92,7 +91,7 @@ func NewHttpClient(ctx context.Context, config *common.Config) (*InventoryHttpCl
 
 	return &InventoryHttpClient{
 		KesselResourceService: kesselv2.NewKesselResourceServiceHTTPClient(client),
-		KesselCheckService:    authzbeta2.NewKesselCheckServiceHTTPClient(client),
+		KesselCheckService:    kesselv2.NewKesselCheckServiceHTTPClient(client),
 		tokenClient:           tokencli,
 	}, nil
 }

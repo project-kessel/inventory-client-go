@@ -34,3 +34,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250124145028-65684f501c47 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/project-kessel/inventory-api => github.com/snehagunta/inventory-api 40485135ab214c82129127a5f13f1d0f2e457694
