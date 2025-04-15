@@ -7,7 +7,7 @@ require (
 	github.com/go-kratos/kratos/v2 v2.8.4
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/patrickmn/go-cache v2.1.0+incompatible
-	github.com/project-kessel/inventory-api v0.0.0-20250404075401-f1a27257285a
+	github.com/project-kessel/inventory-api v0.0.0-20250414140721-40485135ab21
 	google.golang.org/grpc v1.71.0
 	google.golang.org/protobuf v1.36.6
 )
@@ -34,3 +34,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250124145028-65684f501c47 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/project-kessel/inventory-api => github.com/snehagunta/inventory-api v0.0.0-20250414140721-40485135ab21
