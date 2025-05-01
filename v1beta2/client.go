@@ -17,17 +17,14 @@ import (
 type Inventory interface{}
 
 type InventoryClient struct {
-	KesselResourceService kesselv2.KesselResourceServiceClient
-	KesselCheckService    kesselv2.KesselCheckServiceClient
-	KesselLookupService   kesselv2.KesselStreamedListServiceClient
-	gRPCConn              *grpc.ClientConn
-	tokenClient           *common.TokenClient
+	KesselInventoryService kesselv2.KesselInventoryServiceClient
+	gRPCConn               *grpc.ClientConn
+	tokenClient            *common.TokenClient
 }
 
 type InventoryHttpClient struct {
-	KesselResourceService kesselv2.KesselResourceServiceHTTPClient
-	KesselCheckService    kesselv2.KesselCheckServiceHTTPClient
-	tokenClient           *common.TokenClient
+	KesselInventoryService kesselv2.KesselInventoryServiceHTTPClient
+	tokenClient            *common.TokenClient
 }
 
 var (
@@ -62,11 +59,9 @@ func New(config *common.Config) (*InventoryClient, error) {
 	}
 
 	return &InventoryClient{
-		KesselResourceService: kesselv2.NewKesselResourceServiceClient(conn),
-		KesselCheckService:    kesselv2.NewKesselCheckServiceClient(conn),
-		KesselLookupService:   kesselv2.NewKesselStreamedListServiceClient(conn),
-		gRPCConn:              conn,
-		tokenClient:           tokencli,
+		KesselInventoryService: kesselv2.NewKesselInventoryServiceClient(conn),
+		gRPCConn:               conn,
+		tokenClient:            tokencli,
 	}, err
 }
 
@@ -95,9 +90,8 @@ func NewHttpClient(ctx context.Context, config *common.Config) (*InventoryHttpCl
 	}
 
 	return &InventoryHttpClient{
-		KesselResourceService: kesselv2.NewKesselResourceServiceHTTPClient(client),
-		KesselCheckService:    kesselv2.NewKesselCheckServiceHTTPClient(client),
-		tokenClient:           tokencli,
+		KesselInventoryService: kesselv2.NewKesselInventoryServiceHTTPClient(client),
+		tokenClient:            tokencli,
 	}, nil
 }
 
