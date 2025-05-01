@@ -72,8 +72,8 @@ github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINE
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/project-kessel/inventory-api v0.0.0-20250424145016-7904d4757a65 h1:3wwx/Puqqk1jWcWnvb/68QWT2uqYwOm35f1lCJ4iLFw=
-github.com/project-kessel/inventory-api v0.0.0-20250424145016-7904d4757a65/go.mod h1:e/FkgvytVz1lrRdxpdMZPG98tRbfamJgm3G9vSFcj3c=
+github.com/project-kessel/inventory-api v0.0.0-20250501174456-b8bcd9ed9266 h1:yGWBTW9y736RL+baNg/GDBkTTcsYH6nlWP6D5PgYQLQ=
+github.com/project-kessel/inventory-api v0.0.0-20250501174456-b8bcd9ed9266/go.mod h1:Cv9NbWQjP0wfFzWBDSlJx6QHMpWwc5fdEdViQk7QDaw=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/rogpeppe/go-internal v1.13.1 h1:KvO1DLK/DRN07sQ1LQKScxyZJuNnedQ5/wKSR38lUII=
 github.com/rogpeppe/go-internal v1.13.1/go.mod h1:uMEvuHeurkdAXX61udpOXGD/AzZDWNMNyH2VO9fmH0o=
