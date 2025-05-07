@@ -32,23 +32,20 @@ func main() {
 		fmt.Println(err)
 	}
 	request := kesselv2.ReportResourceRequest{
-		Resource: &kesselv2.Resource{
-			Type:               "host",
-			ReporterType:       "HBI",
-			ReporterInstanceId: "1",
-			Representations: &kesselv2.ResourceRepresentations{
-				Metadata: &kesselv2.RepresentationMetadata{
-					LocalResourceId: "1",
-					ApiHref:         "www.example.com",
-					ConsoleHref:     proto.String("www.example.com"),
-					ReporterVersion: proto.String("0.1"),
-				},
-				Common:   data,
-				Reporter: data2,
+		Type:               "host",
+		ReporterType:       "HBI",
+		ReporterInstanceId: "1",
+		Representations: &kesselv2.ResourceRepresentations{
+			Metadata: &kesselv2.RepresentationMetadata{
+				LocalResourceId: "1",
+				ApiHref:         "www.example.com",
+				ConsoleHref:     proto.String("www.example.com"),
+				ReporterVersion: proto.String("0.1"),
 			},
+			Common:   data,
+			Reporter: data2,
 		},
 	}
-	// optts, err := client.GetTokenHTTPOption()
 	resp, err := client.KesselInventoryService.ReportResource(context.Background(), &request)
 	if err != nil {
 		fmt.Println(err)
