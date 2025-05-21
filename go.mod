@@ -8,7 +8,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/project-kessel/inventory-api v0.0.0-20250507142859-a4225659a5b2
-	google.golang.org/grpc v1.72.0
+	google.golang.org/grpc v1.72.1
 	google.golang.org/protobuf v1.36.6
 )
 
@@ -41,7 +41,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
-	github.com/jackc/pgx/v5 v5.7.4 // indirect
+	github.com/jackc/pgx/v5 v5.7.5 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
