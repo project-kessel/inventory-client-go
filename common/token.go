@@ -5,13 +5,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/patrickmn/go-cache"
-	"google.golang.org/grpc"
 	"io"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/patrickmn/go-cache"
+	"google.golang.org/grpc"
 )
 
 const (
@@ -120,7 +121,12 @@ func (a *TokenClient) GetToken() (*TokenResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			return
+		}
+	}(resp.Body)
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

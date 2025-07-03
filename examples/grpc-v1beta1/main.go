@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+
 	kessel "github.com/project-kessel/inventory-api/api/kessel/inventory/v1beta1/resources"
 	"github.com/project-kessel/inventory-client-go/common"
 	"github.com/project-kessel/inventory-client-go/v1beta1"
@@ -18,9 +19,9 @@ func main() {
 		fmt.Println(err)
 	}
 
-	request := kessel.CreateRhelHostRequest{RhelHost: &kessel.RhelHost{
+	request := kessel.CreateK8SClusterRequest{K8SCluster: &kessel.K8SCluster{
 		Metadata: &kessel.Metadata{
-			ResourceType: "rhel-host",
+			ResourceType: "k8s-cluster",
 			WorkspaceId:  "",
 		},
 		ReporterData: &kessel.ReporterData{
@@ -37,7 +38,7 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	_, err = client.RhelHostServiceClient.CreateRhelHost(context.Background(), &request, opts...)
+	_, err = client.K8sClusterService.CreateK8SCluster(context.Background(), &request, opts...)
 	if err != nil {
 		fmt.Println(err)
 	}
