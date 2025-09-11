@@ -4,7 +4,7 @@ go 1.23.6
 
 require (
 	github.com/authzed/grpcutil v0.0.0-20250221190651-1985b19b35b8
-	github.com/go-kratos/kratos/v2 v2.8.4
+	github.com/go-kratos/kratos/v2 v2.9.0
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/project-kessel/inventory-api v0.0.0-20250507142859-a4225659a5b2
