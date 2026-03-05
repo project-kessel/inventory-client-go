@@ -1,13 +1,13 @@
 package common
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -16,8 +16,9 @@ import (
 )
 
 const (
-	tokenLifeDuration            = 5 * time.Minute
-	cacheCleanupInterval         = 5 * time.Minute
+	defaultTokenHTTPTimeout      = 10 * time.Second
+	defaultCacheCleanupInterval  = 5 * time.Minute
+	tokenExpiryMargin            = 30 * time.Second
 	client_credentials_granttype = "client_credentials"
 )
 
@@ -51,13 +52,21 @@ func WithInsecureBearerToken(token string) grpc.CallOption {
 
 // NewTokenClient creates and returns a new TokenClient client.
 func NewTokenClient(config *Config) *TokenClient {
+	timeout := config.TokenHTTPTimeout
+	if timeout == 0 {
+		timeout = defaultTokenHTTPTimeout
+	}
+
 	return &TokenClient{
 		clientId:       config.clientId,
 		clientSecret:   config.clientSecret,
 		url:            config.authServerTokenUrl,
 		EnableOIDCAuth: config.EnableOIDCAuth,
 		Insecure:       config.Insecure,
-		cache:          cache.New(tokenLifeDuration, cacheCleanupInterval),
+		cache:          cache.New(cache.NoExpiration, defaultCacheCleanupInterval),
+		httpClient: &http.Client{
+			Timeout: timeout,
+		},
 	}
 }
 
@@ -74,6 +83,7 @@ type TokenClient struct {
 	EnableOIDCAuth bool
 	Insecure       bool
 	cache          *cache.Cache
+	httpClient     *http.Client
 }
 
 func (a *TokenClient) GetCachedToken(tokenKey string) (string, error) {
@@ -97,19 +107,24 @@ func IsJWTTokenExpired(accessToken string) (bool, time.Time) {
 }
 
 func (a *TokenClient) GetToken() (*TokenResponse, error) {
-	cachedTokenKey := fmt.Sprintf("%s%s", a.url, a.clientId)
+	return a.GetTokenWithContext(context.Background())
+}
+
+// GetTokenWithContext retrieves an access token, using the cache when possible.
+// The provided context controls cancellation and timeout of the SSO request.
+func (a *TokenClient) GetTokenWithContext(ctx context.Context) (*TokenResponse, error) {
+	cachedTokenKey := a.url + a.clientId
 	cachedToken, _ := a.GetCachedToken(cachedTokenKey)
-	IsExpired, _ := IsJWTTokenExpired(cachedToken)
-	if cachedToken != "" && !IsExpired {
+	isExpired, _ := IsJWTTokenExpired(cachedToken)
+	if cachedToken != "" && !isExpired {
 		return &TokenResponse{AccessToken: cachedToken}, nil
 	}
 
-	client := &http.Client{}
 	data := url.Values{}
 	data.Set("client_id", a.clientId)
 	data.Set("client_secret", a.clientSecret)
 	data.Set("grant_type", client_credentials_granttype)
-	req, err := http.NewRequest("POST", a.url, bytes.NewBufferString(data.Encode()))
+	req, err := http.NewRequestWithContext(ctx, "POST", a.url, strings.NewReader(data.Encode()))
 	if err != nil {
 		return nil, err
 	}
@@ -117,16 +132,11 @@ func (a *TokenClient) GetToken() (*TokenResponse, error) {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Accept", "application/json")
 
-	resp, err := client.Do(req)
+	resp, err := a.httpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			return
-		}
-	}(resp.Body)
+	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -141,6 +151,15 @@ func (a *TokenClient) GetToken() (*TokenResponse, error) {
 	if err := json.Unmarshal(body, &tokenResponse); err != nil {
 		return nil, err
 	}
-	a.cache.Set(cachedTokenKey, tokenResponse.AccessToken, cacheCleanupInterval)
+
+	// Cache based on actual token lifetime from SSO, with a safety margin
+	// to ensure we refresh before expiry. Skip caching for tokens that are
+	// too short-lived to benefit from it.
+	cacheDuration := time.Duration(tokenResponse.ExpiresIn) * time.Second
+	if cacheDuration > tokenExpiryMargin {
+		cacheDuration -= tokenExpiryMargin
+		a.cache.Set(cachedTokenKey, tokenResponse.AccessToken, cacheDuration)
+	}
+
 	return &tokenResponse, nil
 }
