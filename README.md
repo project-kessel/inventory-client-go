@@ -1,5 +1,7 @@
 # Inventory API Go Client
 
+# ⛔️ This repository is no longer actively maintained. Please consider using [kessel-sdk-go](https://github.com/project-kessel/kessel-sdk-go) instead ⛔️
+
 ```go
   client, err := v1beta1.New(v1beta1.NewConfig(
         v1beta1.WithgRPCUrl("localhost:9081"),
