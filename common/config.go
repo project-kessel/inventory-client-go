@@ -15,6 +15,7 @@ type Config struct {
 	authServerTokenUrl string
 	TlsConfig          *tls.Config
 	Timeout            time.Duration
+	TokenHTTPTimeout   time.Duration
 }
 
 type ClientOptions func(*Config)
